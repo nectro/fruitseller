@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"strings"
 )
@@ -90,14 +89,12 @@ type ProductToCartRequest struct {
 //     "prodId":"9752d222-882b-4d2e-a0c0-2a298d5fcb6d"
 // }
 
-// FOR PASSWORD
+// FOR PASSWORD CHECKING
 
 func CheckSpecialCharacters(str string) bool {
 	specialChars := "!@#$%^&*()_+~"
 
 	for chars := range specialChars {
-		fmt.Println(specialChars)
-		fmt.Println(chars)
 		if strings.ContainsRune(str, rune(specialChars[chars])) {
 			return true
 		}
@@ -109,8 +106,6 @@ func CheckUpperCase(str string) bool {
 	specialChars := "ABCDEFGHIJKLMNOPQRSTUVQXYZ"
 
 	for chars := range specialChars {
-		fmt.Println(specialChars)
-		fmt.Println(chars)
 		if strings.ContainsRune(str, rune(specialChars[chars])) {
 			return true
 		}
@@ -122,9 +117,16 @@ func CheckLowerCase(str string) bool {
 	specialChars := "abcdefghijklmnopqrstuvwxyz"
 
 	for chars := range specialChars {
-		fmt.Println(specialChars)
-		fmt.Println(chars)
 		if strings.ContainsRune(str, rune(specialChars[chars])) {
+			return true
+		}
+	}
+	return false
+}
+
+func CheckItem(list []string, item string) bool {
+	for idx := range list {
+		if item == list[idx] {
 			return true
 		}
 	}

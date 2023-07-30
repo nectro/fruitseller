@@ -21,10 +21,19 @@ func AddProdToCart(c *gin.Context) {
 
 	if user != "" {
 		cartid := services.GetUserDetails(user, "CARTID")
-		check := services.UpdateCartAddProd(cartid, payload.ProdId)
-		c.JSON(http.StatusOK, gin.H{
-			"Success": check,
-		})
+		ProductList := services.ReadProductIdsFromCart(cartid)
+
+		if CheckItem(ProductList, payload.ProdId.String()) == false {
+			check := services.UpdateCartAddProd(cartid, payload.ProdId)
+			c.JSON(http.StatusOK, gin.H{
+				"Success": check,
+			})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"Success": false,
+				"message": " item already in cart!",
+			})
+		}
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"Success": false,
@@ -47,10 +56,19 @@ func RemoveProdFromCart(c *gin.Context) {
 
 	if user != "" {
 		cartid := services.GetUserDetails(user, "CARTID")
-		check := services.UpdateCartRemoveProd(cartid, payload.ProdId)
-		c.JSON(http.StatusOK, gin.H{
-			"Success": check,
-		})
+		ProductList := services.ReadProductIdsFromCart(cartid)
+
+		if CheckItem(ProductList, payload.ProdId.String()) {
+			check := services.UpdateCartRemoveProd(cartid, payload.ProdId)
+			c.JSON(http.StatusOK, gin.H{
+				"Success": check,
+			})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"Success": false,
+				"message": " item not found",
+			})
+		}
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"Success": false,

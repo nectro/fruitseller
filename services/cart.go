@@ -61,7 +61,7 @@ func ReadProductsFromCart(cartId string) []Product {
 
 	for R.Next() {
 		R.Scan(pq.Array(&ProdIdList))
-		fmt.Print(ProdIdList)
+		// fmt.Print(ProdIdList)
 	}
 
 	var prodList []Product
@@ -69,4 +69,19 @@ func ReadProductsFromCart(cartId string) []Product {
 	prodList = ReadFilteredProducts(ProdIdList)
 
 	return prodList
+}
+
+func ReadProductIdsFromCart(cartId string) []string {
+	ProdIdListQuery := fmt.Sprintf("SELECT PRODUCTID FROM CART WHERE ID='%s'", cartId)
+	R, er := db.Query(ProdIdListQuery)
+	checkError(er)
+
+	var ProdIdList []string
+
+	for R.Next() {
+		R.Scan(pq.Array(&ProdIdList))
+		// fmt.Print(ProdIdList)
+	}
+
+	return ProdIdList
 }

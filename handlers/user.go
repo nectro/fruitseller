@@ -17,19 +17,26 @@ func AddUser(c *gin.Context) {
 	}
 
 	if payload.Firstname != "" && payload.Lastname != "" && payload.Password != "" && payload.Email != "" && payload.Role != "" {
-		generatedId := services.AddCart()
+		if len(payload.Password) > 7 && CheckSpecialCharacters(payload.Password) && CheckLowerCase(payload.Password) && CheckUpperCase(payload.Password) {
+			generatedId := services.AddCart()
 
-		if generatedId != uuid.Nil {
-			services.AddUser(payload.Firstname, payload.Lastname, payload.Password, payload.Email, payload.Role, generatedId)
+			if generatedId != uuid.Nil {
+				services.AddUser(payload.Firstname, payload.Lastname, payload.Password, payload.Email, payload.Role, generatedId)
 
-			c.JSON(http.StatusOK, gin.H{
-				"Success": true,
-				"data":    payload,
-			})
+				c.JSON(http.StatusOK, gin.H{
+					"Success": true,
+					"message": "User Registered!",
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"Success": false,
+					"message": "Something went wrong!",
+				})
+			}
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{
+			c.JSON(http.StatusBadRequest, gin.H{
 				"Success": false,
-				"message": "Something went wrong!",
+				"message": "Password Should contain an Upper Case, Lower Case, a special character and should be greater than 7 characters",
 			})
 		}
 
@@ -60,12 +67,6 @@ func LoginUser(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"Success": false, "message": "couldn't add auth token!"})
 		}
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"Success": false, "message": "couldn't generate auth token!"})
+		c.JSON(http.StatusUnauthorized, gin.H{"Success": false, "message": "couldn't generate auth token!"})
 	}
 }
-
-// "firstname":"root1",
-// "lastname":"admin",
-// "email":"demo1@gmail.com",
-// "role":"ADMIN",
-// "password":"dasd"

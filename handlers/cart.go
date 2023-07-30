@@ -72,7 +72,7 @@ func ReadProdFromCart(c *gin.Context) {
 			"data":    ProductList,
 		})
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"Success": false,
 		})
 	}
@@ -94,7 +94,7 @@ func CartDetails(c *gin.Context) {
 			"Total Items": len(ProductList),
 		})
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"Success": false,
 		})
 	}

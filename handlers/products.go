@@ -34,7 +34,7 @@ func AddProducts(c *gin.Context) {
 				"prodId":  prodId,
 			})
 		} else {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(http.StatusUnauthorized, gin.H{
 				"Success": false,
 				"message": "Access Denied!",
 			})
@@ -72,7 +72,7 @@ func DeleteProducts(c *gin.Context) {
 				"Success": check,
 			})
 		} else {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(http.StatusUnauthorized, gin.H{
 				"Success": false,
 				"message": "Access Denied!",
 			})
@@ -112,7 +112,7 @@ func UpdateProduct(c *gin.Context) {
 				"role":    role,
 			})
 		} else {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(http.StatusUnauthorized, gin.H{
 				"Success": false,
 				"message": "Access Denied!",
 			})
